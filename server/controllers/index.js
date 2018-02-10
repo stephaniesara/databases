@@ -46,6 +46,17 @@ module.exports = {
         res.status(201).send(message);
       });
     }
+  },
+  
+  rooms: {
+    post: function (req, res) {
+      console.log('IN POST ROOM CONTROLLER');
+      var room = req.body;
+      models.rooms.post(room.roomname, (message) => {
+        console.log(message);
+        res.status(201).send(message);
+      });
+    }
   }
 };
 

@@ -68,9 +68,10 @@ module.exports = {
           queryString = 'INSERT INTO rooms (name) VALUES (' + "'" + roomname + "')";
           db.query(queryString, [], function (err) {
             if (err) { throw err; }
-            callback();
-          });
-                  
+            callback('New room POST SUCCESS');
+          });         
+        } else {
+          callback('Room already in database');
         }
       });
       
