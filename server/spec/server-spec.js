@@ -32,16 +32,16 @@ describe('Persistent Node Chat Server', function() {
     request({
       method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/users',
-      json: { username: 'Valjean' }
+      json: { username: 'Jonathan' }
     }, function () {
       // Post a message to the node chat server:
       request({
         method: 'POST',
         uri: 'http://127.0.0.1:3000/classes/messages',
         json: {
-          username: 'Valjean',
+          username: 'Jonathan',
           message: 'In mercy\'s name, three days is all I need.',
-          roomname: 'Hello'
+          roomname: 'lobby'
         }
       }, function () {
         // Now if we look in the database, we should find the
@@ -70,7 +70,7 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-    var queryString = 'INSERT INTO messages (text, userId, roomId) VALUES (\'Men like you can never change!\', 1, 1)';
+    var queryString = 'INSERT INTO messages (text, userId, roomId) VALUES (\'Men like you can never change!\', (SELECT id FROM users WHERE name = \'Jonathan\'), (SELECT id FROM rooms WHERE name = \'lobby\'))';
     var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
@@ -85,7 +85,7 @@ describe('Persistent Node Chat Server', function() {
         var messageLog = JSON.parse(body);
         console.log('all messages: ', messageLog);
         expect(messageLog[0].text).to.equal('Men like you can never change!');
-        expect(messageLog[0].roomname).to.equal('main');
+        expect(messageLog[0].roomname).to.equal('lobby');
         done();
       });
     });

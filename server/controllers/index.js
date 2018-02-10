@@ -41,8 +41,9 @@ module.exports = {
     post: function (req, res) {
       console.log('IN POST USERS CONTROLLER');
       var user = req.body;
-      models.users.post(user.username, () => {
-        res.status(201).send('User POST success');
+      models.users.post(user.username, (message) => {
+        console.log(message);
+        res.status(201).send(message);
       });
     }
   }
