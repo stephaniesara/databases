@@ -12,3 +12,5 @@ var database = mysql.createConnection({
 database.connect(function(err) {
   if (err) { throw err; }
 });
+
+module.exports = database;
