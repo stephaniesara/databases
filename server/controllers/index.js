@@ -11,6 +11,12 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) {
+      console.log('IN GET MESSAGES CONTROLLER');
+      models.messages.get((results) => {
+        console.log(JSON.stringify(results));
+        res.status(200).send(JSON.stringify(results));
+      });
+
     }, // a function which handles a get request for all messages
     post: function (req, res) {
       console.log('IN POST MESSAGES CONTROLLER');

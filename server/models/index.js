@@ -7,12 +7,14 @@ var escapeQuotesSQL = function(messages) {
 
 module.exports = {
   messages: {
+    
     get: function (callback) {
-      db.query('SELECT * FROM messages', [], function(err, result) {
+      var queryString = "SELECT messages.text, rooms.name as roomname, users.name as username FROM messages INNER JOIN rooms ON messages.roomID = rooms.id INNER JOIN users ON messages.userId = users.id";
+      db.query(queryString, [], function(err, result) {
         if (err) {
-          callback(err);
+          throw err;
         } else {
-          callback(null, result);
+          callback(result);
         }
       });
     }, // a function which produces all the messages
