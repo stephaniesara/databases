@@ -1,13 +1,5 @@
 var models = require('../models');
 
-// var collectData = function(req, res, callback) {
-  
-// };
-
-// var endPost = function(res, data) {
-  
-// };
-
 module.exports = {
   messages: {
     get: function (req, res) {
@@ -21,18 +13,14 @@ module.exports = {
     post: function (req, res) {
       console.log('IN POST MESSAGES CONTROLLER');
       var message = req.body;
-      models.messages.post(message.message, message.username, message.roomname, () => {
+      console.log('MESSAGE IS', message);
+      console.log('message text is', message.text);
+      models.messages.post(message.text, message.username, message.roomname, () => {
         res.status(201).send('Message POST success');
       });
-      // var data = '';
-      // req.on('data', (chunk) => {
-      //   data += chunk;
-      // }).on('end', () => {
-      //   var message = JSON.parse(data);
-      //   models.post(message.message, message.username, message.roomname);
-      //   res.status(201).send('Message POST success');
-      // });
+
     } // a function which handles posting a message to the database
+    
   },
 
   users: {

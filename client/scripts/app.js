@@ -41,10 +41,12 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'POST',
-      data: message,
+      data: JSON.stringify(message),
+      contentType: 'application/json',
       success: function (data) {
         // Clear messages input
         console.log('SEND: Success!');
+        console.log(data);
         app.$message.val('');
         
         // Trigger a fetch to update the messages, pass true to animate
@@ -60,25 +62,27 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'GET',
-      data: { order: '-createdAt' },
+      //data: { order: '-createdAt' },
       contentType: 'application/json',
       success: function(data) {
         // Don't bother if we have nothing to work with
+        data = JSON.parse(data);
         console.log('FETCH: Success!');
         console.log(data);
-        if (!data.results || !data.results.length) { return; }
+        console.log(typeof(data));
+        if (!data || !data.length) { return; }
         // Store messages for caching later
-        app.messages = data.results;
+        app.messages = data;
         // Get the last message
-        var mostRecentMessage = data.results[0];
+        var mostRecentMessage = data[0];
         // console.log('MOST RECENT MESSAGE.objectId', mostRecentMessage.objectId);
         // Only bother updating the DOM if we have a new message
         if (mostRecentMessage.objectId !== app.lastMessageId) {
           // Update the UI with the fetched rooms
-          app.renderRoomList(data.results);
+          app.renderRoomList(data);
 
           // Update the UI with the fetched messages
-          app.renderMessages(data.results, animate);
+          app.renderMessages(data, animate);
 
           // Store the ID of the most recent message
           app.lastMessageId = mostRecentMessage.objectId;
@@ -218,7 +222,7 @@ var app = {
       roomname: app.roomname || 'lobby'
     };
 
-    app.send(JSON.stringify(message));
+    app.send(message);
 
     // Stop the form from submitting
     event.preventDefault();
